@@ -7,29 +7,22 @@ import OverviewCard from "./OverviewCard"
 const CardGrid = () => {
     const [pokemons, setPokemons] = useState([])
 
-    const getPokemon = async () => {
+    const getPokemons = async () => {
         const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
         setPokemons(response.data.results)
     }
 
     useEffect(() => {
-        getPokemon()
+        getPokemons()
     }, [])
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={6} md={3}>
-                <OverviewCard pokemons={pokemons} />
-            </Grid>
-            <Grid item xs={6} md={3}>
-                <OverviewCard />
-            </Grid>
-            <Grid item xs={6} md={3}>
-                <OverviewCard />
-            </Grid>
-            <Grid item xs={6} md={3}>
-                <OverviewCard />
-            </Grid>
+            {pokemons.map((_, index) => (
+                <Grid item xs={6} md={2} key={index}>
+                    <OverviewCard pokemonName={pokemons[index].name} />
+                </Grid>
+            ))}
         </Grid>
     )
 }
