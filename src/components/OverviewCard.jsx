@@ -4,39 +4,44 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, Stack } from '@mui/material';
 import axios from 'axios'
 
+import TypeChip from './TypeChip';
+
 const OverviewCard = (props)=>  {
-  const {pokemonName} = props
-  const [pokemon, setPokemon] = useState({})
+  const pokemonName = props.pokemon.name
+  const pokemonUrl = props.pokemon.url
+  const [pokemonData, setPokemonData] = useState({})
 
-  const getPokemon = useCallback(async () => {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`)
-    setPokemon(response.data)
-  }, [pokemonName])
+  const getPokemonInfo = useCallback(async () => {
+    const response = await axios.get(`${pokemonUrl}`)
+    setPokemonData(response.data)
+  }, [pokemonUrl])
 
-  const getPokemonName = () => {
+  const transformPokemonName = () => {
     return pokemonName[0].toUpperCase() + pokemonName.slice(1)
   }
 
   const getPokemonSprite = () => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`
+    // return pokemon.sprites.other.official-artwork.front_default
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png`
   }
 
   const getPokemonText = () => {
-    const text = pokemon.flavor_text_entries?.find((item) => {
-      return item.language.name === 'en' && item.version.name === 'shield'
+    // const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`)
+    const text = pokemonData.flavor_text_entries?.findLast((item) => {
+      return item.language.name === 'en'
     })
     return text?.flavor_text
   }
 
   useEffect(() => {
-    getPokemon()
-  }, [getPokemon])
+    getPokemonInfo()
+  }, [getPokemonInfo])
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardActionArea>
         <CardMedia
           sx={{objectFit: 'contain'}}
@@ -46,12 +51,15 @@ const OverviewCard = (props)=>  {
           alt={`${pokemonName} image`}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {getPokemonName()}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {getPokemonText()}
-          </Typography>
+          <Stack alignItems={'center'}>
+            <Typography gutterBottom variant="h5" component="div">
+              {transformPokemonName()}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {getPokemonText()}
+            </Typography>
+            <TypeChip pokemonData={pokemonData} />
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>

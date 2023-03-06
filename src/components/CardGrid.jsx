@@ -18,9 +18,9 @@ const CardGrid = () => {
 
     return (
         <Grid container spacing={2}>
-            {pokemons.map((_, index) => (
-                <Grid item xs={6} md={2} key={index}>
-                    <OverviewCard pokemonName={pokemons[index].name} />
+            {pokemons.map((pokemon, index) => (
+                <Grid item xs={12} md={2} padding={3} key={index} >
+                    <OverviewCard pokemon={pokemon} />
                 </Grid>
             ))}
         </Grid>
