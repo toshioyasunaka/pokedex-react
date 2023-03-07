@@ -1,16 +1,17 @@
 import * as React from 'react';
-import {getChipColor, transformName} from '../modules/home/home.utils'
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
+import {getChipColor, transformName} from '../modules/home/home.utils'
+
 const TypeChip = (props) => {
 
-    const {pokemonData} = props
+    const {types} = props
 
     return (
         <Stack direction="row" spacing={1}>
-            {pokemonData.types?.map((item, index) => {
+            {types?.map((item, index) => {
                 const type = item.type.name
 
                 return (

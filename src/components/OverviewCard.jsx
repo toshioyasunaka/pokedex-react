@@ -8,6 +8,7 @@ import { CardActionArea, Stack } from '@mui/material';
 import axios from 'axios'
 
 import TypeChip from './TypeChip';
+import {cardBackgroundColor} from '../modules/home/home.utils'
 
 const OverviewCard = (props)=>  {
   const pokemonName = props.pokemon.name
@@ -41,7 +42,7 @@ const OverviewCard = (props)=>  {
   }, [getPokemonInfo])
 
   return (
-    <Card>
+    <Card sx={{background: cardBackgroundColor(pokemonData.types)}}>
       <CardActionArea>
         <CardMedia
           sx={{objectFit: 'contain'}}
@@ -58,7 +59,7 @@ const OverviewCard = (props)=>  {
             <Typography variant="body2" color="text.secondary">
               {getPokemonText()}
             </Typography>
-            <TypeChip pokemonData={pokemonData} />
+            <TypeChip types={pokemonData.types} />
           </Stack>
         </CardContent>
       </CardActionArea>
