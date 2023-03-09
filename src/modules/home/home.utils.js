@@ -11,76 +11,78 @@ export const getChipColor = (type) => {
         case 'bug':
             return '#91BA2E'
         case 'poison':
-            return '#CA72EC'
+            return '#A33EA1'
         case 'electric':
-            return '#fff311'
+            return '#e8bf2c'
         case 'ground':
             return '#E1D158'
         case 'fighting':
-            return '#D36063'
+            return '#C33027'
         case 'psychic':
-            return '#F55792'
+            return '#f95281'
         case 'rock':
             return '#94834F'
         case 'ice':
             return '#66D1E5'
         case 'ghost':
-            return '#BD98CB'
+            return '#735699'
         case 'dragon':
-            return '#D6B1FE'
+            return '#8D62F9'
         case 'dark':
             return '#916852'
         case 'steel':
             return '#BBC5C4'
         case 'fairy':
-            return '#F87EA7'
+            return '#F55792'
         default:
             return '#ACA974'
     }
 }
 
-export const transformName = (type) => {
+export const capitalizeFirstLetter = (type) => {
     return type[0].toUpperCase() + type.slice(1)
 }
 
-export const cardBackgroundColor = (types) => {
+export const getPokemonBackground = (types) => {
+    if(types === undefined) return
+
     const colors = []
     switch (types[0].type.name) {
         case 'grass':
-            colors.push('#3E9709')
+            colors.push('#93D071')
             break
         case 'fire':
-            colors.push('#F67F0B') 
+            colors.push('#EE9B5C') 
             break
         case 'water':
-            colors.push('#36AFF6') 
+            colors.push('#87A8F1') 
             break
         case 'flying':
-            colors.push('#5EB9B2') 
+            colors.push('#8FA9DE') 
             break
         case 'bug':
-            colors.push('#91BA2E') 
+            colors.push('#B8C652') 
             break
         case 'poison':
-            colors.push('#CA72EC') 
+            colors.push('#B36AB1') 
             break
         case 'electric':
-            colors.push('#fff311') 
+            colors.push('#e3e570') 
             break
         case 'ground':
-            colors.push('#E1D158') 
+            colors.push('#E0C166') 
             break
         case 'fighting':
             colors.push('#D36063') 
             break
         case 'psychic':
-            colors.push('#F55792') 
+            colors.push('#f799b3') 
             break
         case 'rock':
-            colors.push('#94834F') 
+            colors.push('#B9A338') 
             break
         case 'ice':
-            colors.push('#66D1E5') 
+            colors.push('#B2E4E1') 
             break
         case 'ghost':
             colors.push('#BD98CB') 
@@ -89,56 +91,56 @@ export const cardBackgroundColor = (types) => {
             colors.push('#D6B1FE') 
             break
         case 'dark':
-            colors.push('#916852') 
+            colors.push('#937A6C') 
             break
         case 'steel':
-            colors.push('#BBC5C4') 
+            colors.push('#C7C6D7') 
             break
         case 'fairy':
-            colors.push('#F87EA7') 
+            colors.push('#D985AF') 
             break
         default:
-            colors.push('#ACA974') 
+            colors.push('#BAB999') 
             break
     }
 
     if(types.length === 2) {
         switch (types[1].type.name) {
             case 'grass':
-                colors.push('#3E9709')
+                colors.push('#93D071')
                 break
             case 'fire':
-                colors.push('#F67F0B') 
+                colors.push('#EE9B5C') 
                 break
             case 'water':
-                colors.push('#36AFF6') 
+                colors.push('#87A8F1') 
                 break
             case 'flying':
-                colors.push('#5EB9B2') 
+                colors.push('#8FA9DE') 
                 break
             case 'bug':
-                colors.push('#91BA2E') 
+                colors.push('#B8C652') 
                 break
             case 'poison':
-                colors.push('#CA72EC') 
+                colors.push('#B36AB1') 
                 break
             case 'electric':
-                colors.push('#fff311') 
+                colors.push('#e3e570') 
                 break
             case 'ground':
-                colors.push('#E1D158') 
+                colors.push('#E0C166') 
                 break
             case 'fighting':
                 colors.push('#D36063') 
                 break
             case 'psychic':
-                colors.push('#F55792') 
+                colors.push('#f799b3') 
                 break
             case 'rock':
-                colors.push('#94834F') 
+                colors.push('#B9A338') 
                 break
             case 'ice':
-                colors.push('#66D1E5') 
+                colors.push('#B2E4E1') 
                 break
             case 'ghost':
                 colors.push('#BD98CB') 
@@ -147,16 +149,16 @@ export const cardBackgroundColor = (types) => {
                 colors.push('#D6B1FE') 
                 break
             case 'dark':
-                colors.push('#916852') 
+                colors.push('#937A6C') 
                 break
             case 'steel':
-                colors.push('#BBC5C4') 
+                colors.push('#C7C6D7') 
                 break
             case 'fairy':
-                colors.push('#F87EA7') 
+                colors.push('#D985AF') 
                 break
             default:
-                colors.push('#ACA974') 
+                colors.push('#BAB999') 
                 break
         }
     }

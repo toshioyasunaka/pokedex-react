@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
-import {getChipColor, transformName} from '../modules/home/home.utils'
+import {getChipColor, capitalizeFirstLetter} from '../modules/home/home.utils'
 
 const TypeChip = (props) => {
 
@@ -16,10 +16,10 @@ const TypeChip = (props) => {
 
                 return (
                     <Chip
-                        avatar={<Avatar sx={{ bgcolor: getChipColor(type) }} alt={`${type}`} src={`https://pokedex-react-mui.netlify.app/${type}.png`} />}
-                        label={`${transformName(type)}`}
+                        avatar={<Avatar sx={{ bgcolor: getChipColor(type) }} alt={`${type}`} src={process.env.PUBLIC_URL + `types/${type}.png`} />}
+                        label={`${capitalizeFirstLetter(type)}`}
                         variant="Filled"
-                        sx={{backgroundColor: `${getChipColor(type)}`}}
+                        sx={{bgcolor: `${getChipColor(type)}`, color: 'white'}}
                         key={index}
                     />
                 )

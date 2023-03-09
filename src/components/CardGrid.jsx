@@ -5,16 +5,16 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import OverviewCard from "./OverviewCard"
 
 const CardGrid = () => {
+    useEffect(() => {
+        getPokemons()
+    }, [])
+
     const [pokemons, setPokemons] = useState([])
 
     const getPokemons = async () => {
         const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
         setPokemons(response.data.results)
     }
-
-    useEffect(() => {
-        getPokemons()
-    }, [])
 
     return (
         <Grid container spacing={2}>

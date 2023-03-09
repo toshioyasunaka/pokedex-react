@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,41 +8,30 @@ import { CardActionArea, Stack } from '@mui/material';
 import axios from 'axios'
 
 import TypeChip from './TypeChip';
-import {cardBackgroundColor} from '../modules/home/home.utils'
+import {capitalizeFirstLetter, getPokemonBackground} from '../modules/home/home.utils'
 
 const OverviewCard = (props)=>  {
+  useEffect(() => {
+    getPokemonInfo()
+    // eslint-disable-next-line
+  }, [])
+
   const pokemonName = props.pokemon.name
   const pokemonUrl = props.pokemon.url
-  const [pokemonData, setPokemonData] = useState({})
+  const [pokemonData, setPokemonData] = useState(null)
 
-  const getPokemonInfo = useCallback(async () => {
+  const getPokemonInfo = async () => {
     const response = await axios.get(`${pokemonUrl}`)
     setPokemonData(response.data)
-  }, [pokemonUrl])
-
-  const transformPokemonName = () => {
-    return pokemonName[0].toUpperCase() + pokemonName.slice(1)
   }
 
   const getPokemonSprite = () => {
-    // return pokemon.sprites.other.official-artwork.front_default
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png`
+    if(pokemonData?.id === undefined) return
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData?.id}.png`
   }
-
-  const getPokemonText = () => {
-    // const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`)
-    const text = pokemonData.flavor_text_entries?.findLast((item) => {
-      return item.language.name === 'en'
-    })
-    return text?.flavor_text
-  }
-
-  useEffect(() => {
-    getPokemonInfo()
-  }, [getPokemonInfo])
 
   return (
-    <Card sx={{background: cardBackgroundColor(pokemonData.types)}}>
+    <Card sx={{background: getPokemonBackground(pokemonData?.types)}}>
       <CardActionArea>
         <CardMedia
           sx={{objectFit: 'contain'}}
@@ -54,12 +43,9 @@ const OverviewCard = (props)=>  {
         <CardContent>
           <Stack alignItems={'center'}>
             <Typography gutterBottom variant="h5" component="div">
-              {transformPokemonName()}
+              {capitalizeFirstLetter(pokemonName)}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {getPokemonText()}
-            </Typography>
-            <TypeChip types={pokemonData.types} />
+            <TypeChip types={pokemonData?.types} />
           </Stack>
         </CardContent>
       </CardActionArea>
