@@ -19,8 +19,9 @@ const TypeChip = (props) => {
                         avatar={<Avatar sx={{ bgcolor: getChipColor(type) }} alt={`${type}`} src={process.env.PUBLIC_URL + `types/${type}.png`} />}
                         label={`${capitalizeFirstLetter(type)}`}
                         variant="Filled"
-                        sx={{bgcolor: `${getChipColor(type)}`, color: 'white'}}
+                        sx={{bgcolor: `${getChipColor(type)}`, color: 'white', boxShadow: 5}}
                         key={index}
+                        title={capitalizeFirstLetter(type)}
                     />
                 )
             })}

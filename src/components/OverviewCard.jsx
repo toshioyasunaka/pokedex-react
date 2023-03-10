@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -31,15 +32,24 @@ const OverviewCard = (props)=>  {
   }
 
   return (
-    <Card sx={{background: getPokemonBackground(pokemonData?.types)}}>
+    <Card sx={{background: getPokemonBackground(pokemonData?.types), boxShadow: 5}}>
       <CardActionArea>
         <CardMedia
-          sx={{objectFit: 'contain'}}
+          sx={{objectFit: 'contain', position:'relative', zIndex:'tooltip'}}
           component="img"
           height="200"
           image={getPokemonSprite()}
           alt={`${pokemonName} image`}
+          title={`${capitalizeFirstLetter(pokemonName)}`}
         />
+
+        {pokemonData ? 
+          <Box sx={{position:'absolute', top:100, textAlign: 'center', width:'100%', zIndex:'modal', fontSize:120, fontWeight: 'bold', opacity:0.2, letterSpacing:-5}}>
+            #{pokemonData.id > 99 ? pokemonData.id : pokemonData.id > 9 ? '0' + pokemonData.id : '00' + pokemonData.id}
+          </Box> :
+          null
+        }
+
         <CardContent>
           <Stack alignItems={'center'}>
             <Typography gutterBottom variant="h5" component="div">

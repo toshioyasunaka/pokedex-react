@@ -1,9 +1,9 @@
-import { TextField } from '@mui/material'
+import RegionSelect from './RegionSelect'
 
 const Form = () => {
     return (
-        <div>
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        <div className='form'>
+            <RegionSelect />
         </div>
     )
 }

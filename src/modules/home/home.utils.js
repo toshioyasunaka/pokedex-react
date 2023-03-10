@@ -5,7 +5,7 @@ export const getChipColor = (type) => {
         case 'fire':
             return '#F67F0B'
         case 'water':
-            return '#36AFF6'
+            return '#2496d8'
         case 'flying':
             return '#5EB9B2'
         case 'bug':
@@ -15,7 +15,7 @@ export const getChipColor = (type) => {
         case 'electric':
             return '#e8bf2c'
         case 'ground':
-            return '#E1D158'
+            return '#d3a528'
         case 'fighting':
             return '#C33027'
         case 'psychic':
@@ -70,7 +70,7 @@ export const getPokemonBackground = (types) => {
             colors.push('#e3e570') 
             break
         case 'ground':
-            colors.push('#E0C166') 
+            colors.push('#b29d63')
             break
         case 'fighting':
             colors.push('#D36063') 
@@ -128,7 +128,7 @@ export const getPokemonBackground = (types) => {
                 colors.push('#e3e570') 
                 break
             case 'ground':
-                colors.push('#E0C166') 
+                colors.push('#b29d63') 
                 break
             case 'fighting':
                 colors.push('#D36063') 
