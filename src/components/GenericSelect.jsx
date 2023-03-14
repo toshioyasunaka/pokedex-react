@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import {capitalizeFirstLetter} from '../modules/home/home.utils'
+
 const RegionSelect = (props) => {
     const selectItems = props.selectItems || []
 
@@ -15,12 +17,12 @@ const RegionSelect = (props) => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={props.generation}
+            value={props.value}
             label={props.title}
             onChange={props.onChange}
           >
             {selectItems.map((item) => {
-              return (<MenuItem value={item} key={item}>{item}</MenuItem>)
+              return (<MenuItem value={item} key={item}>{capitalizeFirstLetter(item)}</MenuItem>)
             })}
           </Select>
         </FormControl>

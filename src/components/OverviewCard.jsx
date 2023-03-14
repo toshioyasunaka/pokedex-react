@@ -34,8 +34,15 @@ const OverviewCard = (props)=>  {
   return (
     <Card sx={{background: getPokemonBackground(pokemonData?.types), boxShadow: 5}}>
       <CardActionArea>
+        {pokemonData ? 
+          <Box sx={{position:'absolute', top:100, textAlign: 'center', width:'100%', fontSize:120, fontWeight: 'bold', opacity:0.2, letterSpacing:-5}}>
+            #{pokemonData.id > 99 ? pokemonData.id : pokemonData.id > 9 ? '0' + pokemonData.id : '00' + pokemonData.id}
+          </Box> :
+          null
+        }
+
         <CardMedia
-          sx={{objectFit: 'contain', position:'relative', zIndex:'tooltip'}}
+          sx={{objectFit: 'contain', position:'relative'}}
           component="img"
           height="200"
           image={getPokemonSprite()}
@@ -43,12 +50,6 @@ const OverviewCard = (props)=>  {
           title={`${capitalizeFirstLetter(pokemonName)}`}
         />
 
-        {pokemonData ? 
-          <Box sx={{position:'absolute', top:100, textAlign: 'center', width:'100%', zIndex:'modal', fontSize:120, fontWeight: 'bold', opacity:0.2, letterSpacing:-5}}>
-            #{pokemonData.id > 99 ? pokemonData.id : pokemonData.id > 9 ? '0' + pokemonData.id : '00' + pokemonData.id}
-          </Box> :
-          null
-        }
 
         <CardContent>
           <Stack alignItems={'center'}>

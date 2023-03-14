@@ -10,7 +10,6 @@ const CardGrid = () => {
     }, [])
 
     const [pokemons, setPokemons] = useState([])
-    const [generation, setGeneration] = useState([])
 
     const getPokemons = async () => {
         const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0')
