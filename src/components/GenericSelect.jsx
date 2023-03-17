@@ -21,7 +21,7 @@ const RegionSelect = (props) => {
             label={props.title}
             onChange={props.onChange}
           >
-            {selectItems.map((item) => {
+            {selectItems?.map((item) => {
               return (<MenuItem value={item} key={item}>{capitalizeFirstLetter(item)}</MenuItem>)
             })}
           </Select>

@@ -1,44 +1,42 @@
-import React, {useState} from 'react'
-import axios from 'axios'
+import React, {useState, useContext, useEffect} from 'react'
 import Stack from '@mui/material/Stack';
+import axios from 'axios'
 
 import GenericSelect from './GenericSelect'
+import {FiltersContext} from '../data/Context'
 
 const Inputs = () => {
-    const [value, setValue] = useState('')
-    const generations = ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Paldea']
-    const types = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy', 'unknown', 'shadow']
-    
-    // const getTypes = async () => {
-    //     const response = await axios.get(`https://pokeapi.co/api/v2/type`)
-    //     const typesAndUrl = response.data.results
 
-    //     let types = []
-    //     typesAndUrl.map(type => {
-    //         types.push(type.name)
-    //     })
-    //     return types
-    // }
+    const {selectedGeneration, setSelectedGeneration, selectedType, setType} = useContext(FiltersContext)
 
-    const onChange = (event) => {
-        setValue(event.target.value);
+    const generations = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
+    const [types, setTypes] = useState([])
+
+    const getTypes = async () => {
+        const response = await axios.get(`https://pokeapi.co/api/v2/type`)
+        const typesAndUrl = response.data.results
+
+        setTypes(typesAndUrl.map(type => type.name))
     }
+
+    useEffect(() => {
+        getTypes()
+    }, [])
 
     return (
         <Stack className='inputs' direction='row' spacing={2} >
             <GenericSelect 
-                onChange={onChange}
-                value={value}
-                title='Generation'          
+                onChange={(event) => setSelectedGeneration(event.target.value)}
+                value={selectedGeneration}
+                title='Generation'
                 selectItems={generations}
             />
 
-            <GenericSelect 
-                onChange={onChange}
-                value={value}
+            <GenericSelect
+                onChange={event => setType(event.target.value)}
+                value={selectedType}
                 title='Types'      
                 selectItems={types}
-                // selectItems={getTypes()}
             />
         </Stack>
     )

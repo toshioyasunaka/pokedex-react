@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,20 +9,25 @@ import { CardActionArea, Stack } from '@mui/material';
 import axios from 'axios'
 
 import TypeChip from './TypeChip';
-import {capitalizeFirstLetter, getPokemonBackground} from '../modules/home/home.utils'
+import {capitalizeFirstLetter, getPokemonBackground, filterByType} from '../modules/home/home.utils'
+import { FiltersContext } from '../data/Context';
+import If from './If';
 
 const OverviewCard = (props)=>  {
-  useEffect(() => {
-    getPokemonInfo()
-    // eslint-disable-next-line
-  }, [])
+  const {selectedType} = useContext(FiltersContext)
 
   const pokemonName = props.pokemon.name
   const pokemonUrl = props.pokemon.url
   const [pokemonData, setPokemonData] = useState(null)
 
-  const getPokemonInfo = async () => {
+  useEffect(() => {
+    getPokemonData()
+    // eslint-disable-next-line
+  }, [props.pokemon, selectedType])
+
+  const getPokemonData = async () => {
     const response = await axios.get(`${pokemonUrl}`)
+    console.log(response.data)
     setPokemonData(response.data)
   }
 
@@ -49,7 +54,6 @@ const OverviewCard = (props)=>  {
           alt={`${pokemonName} image`}
           title={`${capitalizeFirstLetter(pokemonName)}`}
         />
-
 
         <CardContent>
           <Stack alignItems={'center'}>
