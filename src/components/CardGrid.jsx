@@ -14,18 +14,31 @@ const CardGrid = () => {
     }, [selectedGeneration])
 
     const [pokemons, setPokemons] = useState([])
+    const [pokemonsData, setPokemonsData] = useState([])
 
     const getPokemons = async () => {
         const generation = getLimitAndOffset(selectedGeneration)
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${generation.limit}&offset=${generation.offset}`)
+
         setPokemons(response.data.results)
+        getPokemonData()
+    }
+
+    const getPokemonData = async () => {
+        const responses = await Promise.all(pokemons.map(async(pokemon) => {
+            const response = await axios.get(pokemon.url)
+            return response.data
+        }))
+ 
+        console.log(responses)
+        setPokemonsData(responses)
     }
 
     return (
         <Grid container spacing={2}>
-            {pokemons.map((pokemon, index) => (
+            {pokemonsData?.map((pokemonData, index) => (
                 <Grid item xs={12} md={3} padding={3} key={index} >
-                    <OverviewCard pokemon={pokemon} />
+                    <OverviewCard pokemonData={pokemonData} />
                 </Grid>
             ))}
         </Grid>
