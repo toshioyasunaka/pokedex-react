@@ -8,29 +8,32 @@ import { getLimitAndOffset } from '../modules/home/home.utils'
 
 const CardGrid = () => {
     const {selectedGeneration} = useContext(FiltersContext)
+    
+    const [pokemons, setPokemons] = useState([])
+    const [pokemonsData, setPokemonsData] = useState([])
 
     useEffect(() => {
         getPokemons()
-    }, [selectedGeneration])
+    }, [])
 
-    const [pokemons, setPokemons] = useState([])
-    const [pokemonsData, setPokemonsData] = useState([])
+    useEffect(() => {
+        getPokemonData()
+    }, [pokemons, selectedGeneration])
 
     const getPokemons = async () => {
         const generation = getLimitAndOffset(selectedGeneration)
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${generation.limit}&offset=${generation.offset}`)
 
         setPokemons(response.data.results)
-        getPokemonData()
     }
 
     const getPokemonData = async () => {
+        console.log(pokemons)
         const responses = await Promise.all(pokemons.map(async(pokemon) => {
             const response = await axios.get(pokemon.url)
             return response.data
         }))
  
-        console.log(responses)
         setPokemonsData(responses)
     }
 
