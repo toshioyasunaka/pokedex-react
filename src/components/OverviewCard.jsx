@@ -9,11 +9,8 @@ import { CardActionArea, Stack } from '@mui/material';
 
 import TypeChip from './TypeChip';
 import {capitalizeFirstLetter, getPokemonBackground} from '../modules/home/home.utils'
-import { FiltersContext } from '../data/Context';
 
 const OverviewCard = (props)=>  {
-  // const {selectedType} = useContext(FiltersContext)
-
   const {name, id, types} = props.pokemonData
 
   const getPokemonSprite = () => {
