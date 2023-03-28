@@ -7,9 +7,10 @@ import {FiltersContext} from '../data/Context'
 
 const Inputs = () => {
 
-    const {selectedGeneration, setSelectedGeneration, selectedType, setType} = useContext(FiltersContext)
+    const {selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy} = useContext(FiltersContext)
 
     const generations = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
+    const sortBy = ['id', 'name(A-Z)', 'name(Z-A)']
     const [types, setTypes] = useState([])
 
     const getTypes = async () => {
@@ -33,10 +34,17 @@ const Inputs = () => {
             />
 
             <GenericSelect
-                onChange={event => setType(event.target.value)}
+                onChange={event => setSelectedType(event.target.value)}
                 value={selectedType}
                 title='Types'      
                 selectItems={types}
+            />
+
+            <GenericSelect
+                onChange={event => setSelectedSortBy(event.target.value)}
+                value={selectedSortBy}
+                title='Sort By'
+                selectItems={sortBy}
             />
         </Stack>
     )

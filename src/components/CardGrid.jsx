@@ -7,27 +7,20 @@ import { FiltersContext } from '../data/Context';
 import { getLimitAndOffset } from '../modules/home/home.utils'
 
 const CardGrid = () => {
-    const {selectedGeneration, selectedType, activeFilters} = useContext(FiltersContext)
+    const {selectedGeneration, selectedType, selectedSortBy} = useContext(FiltersContext)
     
     const [pokemons, setPokemons] = useState([])
     const [pokemonsData, setPokemonsData] = useState([])
 
     useEffect(() => {
-        filtersCheck()
         getPokemons()
         // eslint-disable-next-line
-    }, [selectedGeneration, selectedType])
+    }, [selectedGeneration, selectedType, selectedSortBy])
 
     useEffect(() => {
         getPokemonData()
         // eslint-disable-next-line
-    }, [pokemons, selectedGeneration, selectedType])
-
-    const filtersCheck = () => {
-        if(selectedType) {
-            return activeFilters.type = true
-        }
-    }
+    }, [pokemons, selectedGeneration, selectedType, selectedSortBy])
 
     const getPokemons = async () => {
         const generation = getLimitAndOffset(selectedGeneration)
@@ -37,13 +30,31 @@ const CardGrid = () => {
         setPokemons(pokemons)
     }
 
+    const sortPokemonsBy = (a, b) => {
+        if(selectedSortBy === 'id') {
+            return a.id - b.id
+        }
+
+        if(selectedSortBy === 'name(A-Z)') {
+            if(a.name < b.name) {
+                return -1
+            }
+        }
+
+        if(selectedSortBy === 'name(Z-A)') {
+            if(a.name > b.name) {
+                return -1
+            }
+        }
+    }
+
     const getPokemonData = async () => {
         const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
             const response = await axios.get(pokemon.url)
             return response.data
         }))
 
-        if(activeFilters.type) {
+        if(selectedType) {
             const filteredPokemons = pokemonsData.filter((pokemonData) => {
                 return pokemonData.types.map(type => type.type.name).includes(selectedType)
             })
@@ -55,7 +66,7 @@ const CardGrid = () => {
 
     return (
         <Grid container spacing={2} width='100%' justifyContent="center">
-            {pokemonsData?.map((pokemonData, index) => (
+            {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
                 <Grid item xs={12} md={3} padding={3} key={index} >
                     <OverviewCard pokemonData={pokemonData} />
                 </Grid>
