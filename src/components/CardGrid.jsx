@@ -7,7 +7,7 @@ import { FiltersContext } from '../data/Context';
 import { getLimitAndOffset } from '../modules/home/home.utils'
 
 const CardGrid = () => {
-    const {selectedGeneration, selectedType, selectedSortBy} = useContext(FiltersContext)
+    const {selectedGeneration, selectedType, selectedSortBy, searchFieldValue} = useContext(FiltersContext)
     
     const [pokemons, setPokemons] = useState([])
     const [pokemonsData, setPokemonsData] = useState([])
@@ -15,7 +15,12 @@ const CardGrid = () => {
     useEffect(() => {
         getPokemons()
         // eslint-disable-next-line
-    }, [selectedGeneration, selectedType, selectedSortBy])
+    }, [selectedGeneration, selectedType])
+
+    useEffect(() => {
+        searchPokemonBySearchField()
+        // eslint-disable-next-line
+    }, [searchFieldValue])
 
     useEffect(() => {
         getPokemonData()
@@ -28,6 +33,18 @@ const CardGrid = () => {
         const pokemons = response.data.results
 
         setPokemons(pokemons)
+    }
+
+    const searchPokemonBySearchField = () => {
+        if(searchFieldValue) {
+            const filteredPokemons = pokemonsData.filter(pokemonData => {
+                return pokemonData.name.includes(searchFieldValue)
+            })
+
+            console.log(filteredPokemons)
+            setPokemonsData(filteredPokemons)
+        } 
+        return
     }
 
     const sortPokemonsBy = (a, b) => {
@@ -61,6 +78,10 @@ const CardGrid = () => {
             setPokemonsData(filteredPokemons)
         } else {
             setPokemonsData(pokemonsData)
+        }
+
+        if(searchFieldValue) {
+            
         }
     }
 

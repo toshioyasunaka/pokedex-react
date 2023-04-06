@@ -4,10 +4,11 @@ import axios from 'axios'
 
 import GenericSelect from './GenericSelect'
 import {FiltersContext} from '../data/Context'
+import TextField from '@mui/material/TextField';
 
 const Inputs = () => {
 
-    const {selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy} = useContext(FiltersContext)
+    const {selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy, searchFieldValue, setSearchFieldValue} = useContext(FiltersContext)
 
     const generations = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
     const sortBy = ['id', 'name(A-Z)', 'name(Z-A)']
@@ -46,6 +47,8 @@ const Inputs = () => {
                 title='Sort By'
                 selectItems={sortBy}
             />
+
+            <TextField id="outlined-basic" label="Search" variant="outlined" value={searchFieldValue} onChange={e => setSearchFieldValue(e.target.value)} />
         </Stack>
     )
 }
