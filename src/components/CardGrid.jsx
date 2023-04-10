@@ -13,76 +13,51 @@ const CardGrid = () => {
     const [pokemonsData, setPokemonsData] = useState([])
 
     useEffect(() => {
+        const getPokemons = async () => {
+            const generation = getLimitAndOffset(selectedGeneration)
+            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${generation.limit}&offset=${generation.offset}`)
+            const pokemons = response.data.results
+
+            setPokemons(pokemons)
+        }
+
         getPokemons()
-        // eslint-disable-next-line
     }, [selectedGeneration, selectedType])
 
     useEffect(() => {
-        searchPokemonBySearchField()
-        // eslint-disable-next-line
-    }, [searchFieldValue])
-
-    useEffect(() => {
+        const getPokemonData = async () => {
+            const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
+                const response = await axios.get(pokemon.url)
+                return response.data
+            }))
+    
+            if(selectedType) {
+                const filteredPokemons = pokemonsData.filter((pokemonData) => {
+                    return pokemonData.types.map(type => type.type.name).includes(selectedType)
+                })
+                setPokemonsData(filteredPokemons)
+            } else {
+                setPokemonsData(pokemonsData)
+                // const pokemonsByType = (await axios.get(`https://pokeapi.co/api/v2/type/${selectedType}`)).data.pokemon
+                // console.log(pokemonsByType)
+            }
+    
+            if(searchFieldValue) {
+                const filteredPokemons = pokemonsData.filter(pokemonData => {
+                    return pokemonData.name.includes(searchFieldValue)
+                })
+                
+                setPokemonsData(filteredPokemons)
+            }
+        }
+        
         getPokemonData()
-        // eslint-disable-next-line
-    }, [pokemons, selectedGeneration, selectedType, selectedSortBy])
-
-    const getPokemons = async () => {
-        const generation = getLimitAndOffset(selectedGeneration)
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${generation.limit}&offset=${generation.offset}`)
-        const pokemons = response.data.results
-
-        setPokemons(pokemons)
-    }
-
-    const searchPokemonBySearchField = () => {
-        if(searchFieldValue) {
-            const filteredPokemons = pokemonsData.filter(pokemonData => {
-                return pokemonData.name.includes(searchFieldValue)
-            })
-
-            console.log(filteredPokemons)
-            setPokemonsData(filteredPokemons)
-        } 
-        return
-    }
+    }, [pokemons, selectedGeneration, selectedType, searchFieldValue])
 
     const sortPokemonsBy = (a, b) => {
-        if(selectedSortBy === 'id') {
-            return a.id - b.id
-        }
-
-        if(selectedSortBy === 'name(A-Z)') {
-            if(a.name < b.name) {
-                return -1
-            }
-        }
-
-        if(selectedSortBy === 'name(Z-A)') {
-            if(a.name > b.name) {
-                return -1
-            }
-        }
-    }
-
-    const getPokemonData = async () => {
-        const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
-            const response = await axios.get(pokemon.url)
-            return response.data
-        }))
-
-        if(selectedType) {
-            const filteredPokemons = pokemonsData.filter((pokemonData) => {
-                return pokemonData.types.map(type => type.type.name).includes(selectedType)
-            })
-            setPokemonsData(filteredPokemons)
-        } else {
-            setPokemonsData(pokemonsData)
-        }
-
-        if(searchFieldValue) {
-            
-        }
+        if(selectedSortBy === 'id') return a.id - b.id
+        if(selectedSortBy === 'name(A-Z)') return a.name.localeCompare(b.name)
+        if(selectedSortBy === 'name(Z-A)') return b.name.localeCompare(a.name)
     }
 
     return (

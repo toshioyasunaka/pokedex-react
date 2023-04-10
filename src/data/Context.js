@@ -7,7 +7,7 @@ export function FiltersProvider(props) {
     const [searchFieldValue, setSearchFieldValue] = useState('')
 
     return (
-        <FiltersContext.Provider 
+        <FiltersContext.Provider
             value={{selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy, searchFieldValue, setSearchFieldValue}}>
             {props.children}
         </FiltersContext.Provider>

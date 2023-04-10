@@ -10,9 +10,9 @@ const Inputs = () => {
 
     const {selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy, searchFieldValue, setSearchFieldValue} = useContext(FiltersContext)
 
-    const generations = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
     const sortBy = ['id', 'name(A-Z)', 'name(Z-A)']
     const [types, setTypes] = useState([])
+    const [generations, setGenerations] = useState([])
 
     const getTypes = async () => {
         const response = await axios.get(`https://pokeapi.co/api/v2/type`)
@@ -21,8 +21,19 @@ const Inputs = () => {
         setTypes(typesAndUrl.map(type => type.name))
     }
 
+    const getGenerations = async () => {
+        const response = (await axios.get('https://pokeapi.co/api/v2/generation')).data.results
+        const generations = await Promise.all(response.map(async(generation) => {
+            const response = await axios.get(generation.url)
+            return response.data.main_region.name
+        }))
+
+        setGenerations(generations)
+    }
+
     useEffect(() => {
         getTypes()
+        getGenerations()
     }, [])
 
     return (
@@ -48,7 +59,14 @@ const Inputs = () => {
                 selectItems={sortBy}
             />
 
-            <TextField id="outlined-basic" label="Search" variant="outlined" value={searchFieldValue} onChange={e => setSearchFieldValue(e.target.value)} />
+            <TextField 
+                id="outlined-basic"
+                label="Search"
+                variant="outlined"
+                value={searchFieldValue}
+                onChange={e => setSearchFieldValue(e.target.value)} 
+            />
+
         </Stack>
     )
 }
