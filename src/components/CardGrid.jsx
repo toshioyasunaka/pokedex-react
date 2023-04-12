@@ -15,7 +15,6 @@ const CardGrid = () => {
         const getPokemons = async () => {
             const region = await (await axios.get(`https://pokeapi.co/api/v2/region/${selectedGeneration}`)).data
             const generation = await axios.get(region.main_generation.url)
-            console.log(generation.data)
             const pokemons = generation.data.pokemon_species
 
             setPokemons(pokemons)
@@ -27,7 +26,7 @@ const CardGrid = () => {
     useEffect(() => {
         const getPokemonData = async () => {
             const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
-                const response = await axios.get(pokemon.url)
+                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
                 return response.data
             }))
     
