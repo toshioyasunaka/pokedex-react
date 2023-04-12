@@ -26,7 +26,8 @@ const CardGrid = () => {
     useEffect(() => {
         const getPokemonData = async () => {
             const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
-                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
+                const pokemonIdNumber = pokemon.url.slice(42)
+                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonIdNumber}`)
                 return response.data
             }))
     

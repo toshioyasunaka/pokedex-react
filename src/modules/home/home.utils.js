@@ -163,7 +163,7 @@ export const getPokemonBackground = (types) => {
         }
     }
 
-    return `linear-gradient(135deg, ${colors[0]} 0%, ${colors.length === 2 ? colors[1] : colors[0]} 100%);`
+    return `linear-gradient(135deg, ${colors[0]} 20%, ${colors.length === 2 ? colors[1] : colors[0]} 80%);`
 }
 
 export const filterByType = (selectedType, pokemonData) => {
