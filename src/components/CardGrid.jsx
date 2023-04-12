@@ -4,7 +4,6 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 import OverviewCard from "./OverviewCard"
 import { FiltersContext } from '../data/Context';
-import { getLimitAndOffset } from '../modules/home/home.utils'
 
 const CardGrid = () => {
     const {selectedGeneration, selectedType, selectedSortBy, searchFieldValue} = useContext(FiltersContext)
@@ -14,9 +13,10 @@ const CardGrid = () => {
 
     useEffect(() => {
         const getPokemons = async () => {
-            const generation = getLimitAndOffset(selectedGeneration)
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${generation.limit}&offset=${generation.offset}`)
-            const pokemons = response.data.results
+            const region = await (await axios.get(`https://pokeapi.co/api/v2/region/${selectedGeneration}`)).data
+            const generation = await axios.get(region.main_generation.url)
+            console.log(generation.data)
+            const pokemons = generation.data.pokemon_species
 
             setPokemons(pokemons)
         }

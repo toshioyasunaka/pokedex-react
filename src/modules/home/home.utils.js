@@ -166,18 +166,6 @@ export const getPokemonBackground = (types) => {
     return `linear-gradient(135deg, ${colors[0]} 0%, ${colors.length === 2 ? colors[1] : colors[0]} 100%);`
 }
 
-export const getLimitAndOffset = (generation) => {
-    if(generation === 'kanto') return {limit: 151, offset: 0}
-    if(generation === 'johto') return {limit: 100, offset: 151}
-    if(generation === 'hoenn') return {limit: 135, offset: 251}
-    if(generation === 'sinnoh') return {limit: 108, offset: 386}
-    if(generation === 'unova') return {limit: 155, offset: 494}
-    if(generation === 'kalos') return {limit: 72, offset: 649}
-    if(generation === 'alola') return {limit: 88, offset: 721}
-    if(generation === 'galar') return {limit: 96, offset: 809}
-    if(generation === 'paldea') return {limit: 105, offset: 905}
-}
-
 export const filterByType = (selectedType, pokemonData) => {
     if(!selectedType) return
     return pokemonData.types.map(type => type.type.name.includes(selectedType))
