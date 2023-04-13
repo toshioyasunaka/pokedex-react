@@ -32,22 +32,18 @@ const CardGrid = () => {
             }))
     
             if(selectedType) {
-                const filteredPokemons = pokemonsData.filter((pokemonData) => {
-                    return pokemonData.types.map(type => type.type.name).includes(selectedType)
-                })
-                setPokemonsData(filteredPokemons)
-            } else {
-                setPokemonsData(pokemonsData)
+                filterPokemonsByType()
                 // const pokemonsByType = (await axios.get(`https://pokeapi.co/api/v2/type/${selectedType}`)).data.pokemon
                 // console.log(pokemonsByType)
+                if(searchFieldValue) {
+                    filterPokemonBySearchedName()
+                }
+            } else {
+                setPokemonsData(pokemonsData)
             }
-    
+
             if(searchFieldValue) {
-                const filteredPokemons = pokemonsData.filter(pokemonData => {
-                    return pokemonData.name.includes(searchFieldValue)
-                })
-                
-                setPokemonsData(filteredPokemons)
+                filterPokemonBySearchedName()
             }
         }
         
@@ -58,6 +54,21 @@ const CardGrid = () => {
         if(selectedSortBy === 'id') return a.id - b.id
         if(selectedSortBy === 'name(A-Z)') return a.name.localeCompare(b.name)
         if(selectedSortBy === 'name(Z-A)') return b.name.localeCompare(a.name)
+    }
+
+    const filterPokemonsByType = () => {
+        const filteredPokemons = pokemonsData.filter((pokemonData) => {
+            return pokemonData.types.map(type => type.type.name).includes(selectedType)
+        })
+        setPokemonsData(filteredPokemons)
+    }
+
+    const filterPokemonBySearchedName = () => {
+        const filteredPokemons = pokemonsData.filter(pokemonData => {
+            return pokemonData.name.includes(searchFieldValue)
+        })
+        
+        setPokemonsData(filteredPokemons)
     }
 
     return (
