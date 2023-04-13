@@ -63,7 +63,7 @@ const CardGrid = () => {
     return (
         <Grid container spacing={2} width='100%' justifyContent="center">
             {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
-                <Grid item xs={12} md={3} padding={3} key={index} >
+                <Grid xs={12} md={3} padding={3} key={index} >
                     <OverviewCard pokemonData={pokemonData} />
                 </Grid>
             ))}

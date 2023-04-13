@@ -1,5 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react'
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import axios from 'axios'
 
 import GenericSelect from './GenericSelect'
@@ -29,6 +31,12 @@ const Inputs = () => {
         }))
 
         setGenerations(generations)
+    }
+
+    const clearFilters = () => {
+        setSelectedType('')
+        setSelectedSortBy('id')
+        setSearchFieldValue('')
     }
 
     useEffect(() => {
@@ -67,6 +75,9 @@ const Inputs = () => {
                 onChange={e => setSearchFieldValue(e.target.value)} 
             />
 
+            <Button variant="contained" color='error' onClick={clearFilters}>
+                <HighlightOffIcon />
+            </Button>
         </Stack>
     )
 }
