@@ -32,9 +32,11 @@ const CardGrid = () => {
             }))
     
             if(selectedType) {
-                filterPokemonsByType()
-                // const pokemonsByType = (await axios.get(`https://pokeapi.co/api/v2/type/${selectedType}`)).data.pokemon
-                // console.log(pokemonsByType)
+                const filteredPokemons = pokemonsData.filter((pokemonData) => {
+                    return pokemonData.types.map(type => type.type.name).includes(selectedType)
+                })
+                setPokemonsData(filteredPokemons)
+
                 if(searchFieldValue) {
                     filterPokemonBySearchedName()
                 }
@@ -54,13 +56,6 @@ const CardGrid = () => {
         if(selectedSortBy === 'id') return a.id - b.id
         if(selectedSortBy === 'name(A-Z)') return a.name.localeCompare(b.name)
         if(selectedSortBy === 'name(Z-A)') return b.name.localeCompare(a.name)
-    }
-
-    const filterPokemonsByType = () => {
-        const filteredPokemons = pokemonsData.filter((pokemonData) => {
-            return pokemonData.types.map(type => type.type.name).includes(selectedType)
-        })
-        setPokemonsData(filteredPokemons)
     }
 
     const filterPokemonBySearchedName = () => {
