@@ -1,7 +1,7 @@
 import React, {useState, createContext} from "react";
 
 export function FiltersProvider(props) {
-    const [selectedGeneration, setSelectedGeneration] = useState('kanto')
+    const [selectedGeneration, setSelectedGeneration] = useState('')
     const [selectedType, setSelectedType] = useState('')
     const [selectedSortBy, setSelectedSortBy] = useState('id')
     const [searchFieldValue, setSearchFieldValue] = useState('')

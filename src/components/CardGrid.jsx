@@ -13,7 +13,7 @@ const CardGrid = () => {
 
     useEffect(() => {
         const getPokemons = async () => {
-            const region = await (await axios.get(`https://pokeapi.co/api/v2/region/${selectedGeneration}`)).data
+            const region = await (await axios.get(`https://pokeapi.co/api/v2/region/${selectedGeneration ? selectedGeneration : 'kanto'}`)).data
             const generation = await axios.get(region.main_generation.url)
             const pokemons = generation.data.pokemon_species
 

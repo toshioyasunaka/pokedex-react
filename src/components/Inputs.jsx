@@ -56,7 +56,7 @@ const Inputs = () => {
             <GenericSelect
                 onChange={event => setSelectedType(event.target.value)}
                 value={selectedType}
-                title='Types'      
+                title='Type'      
                 selectItems={types}
             />
 
