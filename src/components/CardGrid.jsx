@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState, useContext } from 'react';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import CircularProgress from '@mui/material/CircularProgress';
 
 import OverviewCard from "./OverviewCard"
 import { FiltersContext } from '../data/Context';
@@ -10,14 +11,17 @@ const CardGrid = () => {
     
     const [pokemons, setPokemons] = useState([])
     const [pokemonsData, setPokemonsData] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const getPokemons = async () => {
+            setLoading(true)
             const region = await (await axios.get(`https://pokeapi.co/api/v2/region/${selectedGeneration ? selectedGeneration : 'kanto'}`)).data
             const generation = await axios.get(region.main_generation.url)
             const pokemons = generation.data.pokemon_species
 
             setPokemons(pokemons)
+            setLoading(false)
         }
 
         getPokemons()
@@ -25,6 +29,8 @@ const CardGrid = () => {
 
     useEffect(() => {
         const getPokemonData = async () => {
+            setLoading(true)
+
             const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
                 const pokemonIdNumber = pokemon.url.slice(42)
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonIdNumber}`)
@@ -47,6 +53,7 @@ const CardGrid = () => {
             if(searchFieldValue) {
                 filterPokemonBySearchedName()
             }
+            setLoading(false)
         }
         
         getPokemonData()
@@ -67,13 +74,19 @@ const CardGrid = () => {
     }
 
     return (
-        <Grid container spacing={2} width='100%' justifyContent="center">
-            {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
-                <Grid xs={12} md={3} padding={3} key={index} >
-                    <OverviewCard pokemonData={pokemonData} />
+        <div style={{flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            {loading && <CircularProgress />}
+
+            {!loading && 
+                <Grid container spacing={2} width='100%' justifyContent="center">              
+                    {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
+                        <Grid xs={12} md={3} padding={3} key={index} >
+                            <OverviewCard pokemonData={pokemonData} />
+                        </Grid>
+                    ))}
                 </Grid>
-            ))}
-        </Grid>
+            }
+        </div>
     )
 }
 
