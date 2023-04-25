@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -12,6 +12,14 @@ const CardGrid = () => {
     const [pokemons, setPokemons] = useState([])
     const [pokemonsData, setPokemonsData] = useState([])
     const [loading, setLoading] = useState(false)
+
+    const filterPokemonBySearchedName = useCallback(() => {
+        const filteredPokemons = pokemonsData.filter(pokemonData => {
+            return pokemonData.name.includes(searchFieldValue)
+        })
+        
+        setPokemonsData(filteredPokemons)
+    }, [pokemonsData, searchFieldValue]) 
 
     useEffect(() => {
         const getPokemons = async () => {
@@ -57,6 +65,7 @@ const CardGrid = () => {
         }
         
         getPokemonData()
+        // eslint-disable-next-line
     }, [pokemons, selectedGeneration, selectedType, searchFieldValue])
 
     const sortPokemonsBy = (a, b) => {
@@ -65,16 +74,8 @@ const CardGrid = () => {
         if(selectedSortBy === 'name(Z-A)') return b.name.localeCompare(a.name)
     }
 
-    const filterPokemonBySearchedName = () => {
-        const filteredPokemons = pokemonsData.filter(pokemonData => {
-            return pokemonData.name.includes(searchFieldValue)
-        })
-        
-        setPokemonsData(filteredPokemons)
-    }
-
     return (
-        <div style={{flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div style={{flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
             {loading && <CircularProgress />}
 
             {!loading && 
