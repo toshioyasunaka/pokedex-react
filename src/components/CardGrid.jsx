@@ -13,13 +13,13 @@ const CardGrid = () => {
     const [pokemonsData, setPokemonsData] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const filterPokemonBySearchedName = useCallback(() => {
-        const filteredPokemons = pokemonsData.filter(pokemonData => {
-            return pokemonData.name.includes(searchFieldValue)
+    const filterPokemonBySearchedName = useCallback((pokemons) => {
+        const filteredPokemons = pokemons.filter(pokemon => {
+            return pokemon.name.includes(searchFieldValue)
         })
         
-        setPokemonsData(filteredPokemons)
-    }, [pokemonsData, searchFieldValue]) 
+        return filteredPokemons
+    }, [searchFieldValue]) 
 
     useEffect(() => {
         const getPokemons = async () => {
@@ -37,31 +37,29 @@ const CardGrid = () => {
 
     useEffect(() => {
         const getPokemonData = async () => {
-            setLoading(true)
 
+            setLoading(true)
+            let filteredPokemons = [];
+            
             const pokemonsData = await Promise.all(pokemons.map(async(pokemon) => {
                 const pokemonIdNumber = pokemon.url.slice(42)
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonIdNumber}`)
                 return response.data
             }))
-    
+
             if(selectedType) {
-                const filteredPokemons = pokemonsData.filter((pokemonData) => {
+                filteredPokemons = pokemonsData.filter((pokemonData) => {
                     return pokemonData.types.map(type => type.type.name).includes(selectedType)
                 })
-                setPokemonsData(filteredPokemons)
-
-                if(searchFieldValue) {
-                    filterPokemonBySearchedName()
-                }
-            } else {
-                setPokemonsData(pokemonsData)
             }
 
             if(searchFieldValue) {
-                filterPokemonBySearchedName()
+                const pokemons = filteredPokemons.length > 0 ? filteredPokemons : pokemonsData
+                filteredPokemons = filterPokemonBySearchedName(pokemons)
             }
-            setLoading(false)
+
+            setPokemonsData(selectedType || searchFieldValue ? filteredPokemons : pokemonsData)
+            setLoading(false) 
         }
         
         getPokemonData()
@@ -77,8 +75,9 @@ const CardGrid = () => {
     return (
         <div style={{flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
             {loading && <CircularProgress />}
+            {pokemonsData.length === 0 && <span style={{display: 'flex', justifyContent: 'center', width: '100%'}}>There is no pokemon that matches your search.</span>}
 
-            {!loading && 
+            {!loading && pokemonsData.length > 0 &&
                 <Grid container spacing={2} width='100%' justifyContent="center">              
                     {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
                         <Grid xs={12} md={3} padding={3} key={index} >
