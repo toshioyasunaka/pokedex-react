@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 
 const Inputs = () => {
 
-    const {selectedGeneration, setSelectedGeneration, selectedType, setSelectedType, selectedSortBy, setSelectedSortBy, searchFieldValue, setSearchFieldValue} = useContext(FiltersContext)
+    const {selectedGeneration, onChangeGeneration, selectedType, onChangeType, selectedSortBy, onChangeSortBy, searchFieldValue, setSearchFieldValue} = useContext(FiltersContext)
 
     const sortBy = ['id', 'name(A-Z)', 'name(Z-A)']
     const [types, setTypes] = useState([])
@@ -34,8 +34,8 @@ const Inputs = () => {
     }
 
     const clearFilters = () => {
-        setSelectedType('')
-        setSelectedSortBy('id')
+        onChangeType('')
+        onChangeSortBy('id')
         setSearchFieldValue('')
     }
 
@@ -47,24 +47,27 @@ const Inputs = () => {
     return (
         <Stack className='inputs' direction='row' spacing={2} >
             <GenericSelect 
-                onChange={(event) => setSelectedGeneration(event.target.value)}
+                onChange={(event) => onChangeGeneration(event.target.value)}
                 value={selectedGeneration}
                 title='Generation'
                 selectItems={generations}
+                minWidth={150}
             />
 
             <GenericSelect
-                onChange={event => setSelectedType(event.target.value)}
+                onChange={event => onChangeType(event.target.value)}
                 value={selectedType}
                 title='Type'      
                 selectItems={types}
+                minWidth={150}
             />
 
             <GenericSelect
-                onChange={event => setSelectedSortBy(event.target.value)}
+                onChange={event => onChangeSortBy(event.target.value)}
                 value={selectedSortBy}
                 title='Sort By'
                 selectItems={sortBy}
+                minWidth={150}
             />
 
             <TextField 

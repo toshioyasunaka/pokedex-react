@@ -7,21 +7,21 @@ import Select from '@mui/material/Select';
 
 import {capitalizeFirstLetter} from '../modules/home/home.utils'
 
-const RegionSelect = (props) => {
-    const selectItems = props.selectItems || []
+const GenericSelect = ({selectItems, value, title, onChange, minWidth}) => {
+    const items = selectItems || []
 
     return (
-        <Box sx={{ minWidth: 150 }}>
+        <Box sx={{ minWidth }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">{props.title}</InputLabel>
+          <InputLabel id="demo-simple-select-label">{title}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={props.value}
-            label={props.title}
-            onChange={props.onChange}
+            value={value}
+            label={title}
+            onChange={onChange}
           >
-            {selectItems?.map((item) => {
+            {items?.map((item) => {
               return (<MenuItem value={item} key={item}>{capitalizeFirstLetter(item)}</MenuItem>)
             })}
           </Select>
@@ -30,4 +30,4 @@ const RegionSelect = (props) => {
     )
 }
 
-export default RegionSelect
+export default GenericSelect

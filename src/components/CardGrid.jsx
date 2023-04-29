@@ -75,12 +75,12 @@ const CardGrid = () => {
     return (
         <div style={{flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
             {loading && <CircularProgress />}
-            {pokemonsData.length === 0 && <span style={{display: 'flex', justifyContent: 'center', width: '100%'}}>There is no pokemon that matches your search.</span>}
+            {!loading && pokemonsData.length === 0 && <span style={{display: 'flex', justifyContent: 'center', width: '100%'}}>There is no pokemon that matches your search.</span>}
 
             {!loading && pokemonsData.length > 0 &&
                 <Grid container spacing={2} width='100%' justifyContent="center">              
                     {pokemonsData?.sort(sortPokemonsBy).map((pokemonData, index) => (
-                        <Grid xs={12} md={3} padding={3} key={index} >
+                        <Grid xs={12} md={3} padding={3} key={pokemonData.id} >
                             <OverviewCard pokemonData={pokemonData} />
                         </Grid>
                     ))}
